@@ -1,18 +1,25 @@
 import { Header, Login } from "./components";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
+import Profile from "./components/Profile";
 
 function App() {
-  return (
-    <div className="App">
-      <Header />
-      <Container>
-        <Route path="/login">
-          <Login />
-        </Route>
-      </Container>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Header />
+			<Container>
+				<Switch>
+					<Route exact path="/login">
+						<Login />
+					</Route>
+
+					<Route exact path="/user/:userId">
+						<Profile />
+					</Route>
+				</Switch>
+			</Container>
+		</div>
+	);
 }
 
 export default App;
