@@ -7,6 +7,7 @@ import {
 	TextField,
 	Typography,
 } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 import useVK from "../services/VK";
 
@@ -36,10 +37,20 @@ const Login = () => {
 
 	if (authenticated) {
 		return (
-			<span>
-				{user.first_name} {user.last_name}{" "}
-				<button onClick={logout}>Logout</button>
-			</span>
+			<Grid item md={4} style={{ margin: "0 auto" }}>
+				<div className={classes.paper}>
+					<Typography component="h1" variant="h5" gutterBottom>
+						{user.first_name} {user.last_name}{" "}
+					</Typography>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={logout}
+					>
+						Logout
+					</Button>
+				</div>
+			</Grid>
 		);
 	}
 
