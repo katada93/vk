@@ -19,6 +19,7 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
+import Friends from "./Friends";
 
 const useStyles = makeStyles({
 	wrap: {
@@ -60,62 +61,67 @@ const Profile = () => {
 			<Typography variant="h3" align="center">
 				Profile
 			</Typography>
-			<Grid className={classes.wrap} item xs={8}>
-				{posts &&
-					posts.map((post) => (
-						<Card key={post.id} className={classes.card}>
-							<CardActionArea>
-								<CardHeader
-									avatar={
-										<Avatar
-											aria-label="recipe"
-											className={classes.avatar}
+			<Grid container>
+				<Grid item xs={4}>
+					<Friends />
+				</Grid>
+				<Grid item xs={8}>
+					{posts &&
+						posts.map((post) => (
+							<Card key={post.id} className={classes.card}>
+								<CardActionArea>
+									<CardHeader
+										avatar={
+											<Avatar
+												aria-label="recipe"
+												className={classes.avatar}
+											>
+												R
+											</Avatar>
+										}
+										title="Shrimp and Chorizo Paella"
+										subheader="14.06.2021"
+									/>
+									<CardMedia
+										component="img"
+										alt="Contemplative Reptile"
+										height="200"
+										image="https://www.geeklawblog.com/wp-content/uploads/sites/528/2018/12/liprofile-656x369.png"
+										title="Contemplative Reptile"
+									/>
+									<CardContent>
+										<Typography
+											variant="body2"
+											color="textSecondary"
+											component="p"
 										>
-											R
-										</Avatar>
-									}
-									title="Shrimp and Chorizo Paella"
-									subheader="14.06.2021"
-								/>
-								<CardMedia
-									component="img"
-									alt="Contemplative Reptile"
-									height="200"
-									image="https://www.geeklawblog.com/wp-content/uploads/sites/528/2018/12/liprofile-656x369.png"
-									title="Contemplative Reptile"
-								/>
-								<CardContent>
-									<Typography
-										variant="body2"
-										color="textSecondary"
-										component="p"
-									>
-										{post.text}
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-							<CardActions>
-								<IconButton aria-label="likes">
-									<FavoriteIcon />
-									<span className={classes.count}>
-										{post.likes.count}
-									</span>
-								</IconButton>
-								<IconButton aria-label="comments">
-									<ChatBubbleOutlineIcon />
-									<span className={classes.count}>
-										{post.comments.count}
-									</span>
-								</IconButton>
-								<IconButton aria-label="share">
-									<ShareIcon />
-									<span className={classes.count}>
-										{post.reposts.count}
-									</span>
-								</IconButton>
-							</CardActions>
-						</Card>
-					))}
+											{post.text}
+										</Typography>
+									</CardContent>
+								</CardActionArea>
+								<CardActions>
+									<IconButton aria-label="likes">
+										<FavoriteIcon />
+										<span className={classes.count}>
+											{post.likes.count}
+										</span>
+									</IconButton>
+									<IconButton aria-label="comments">
+										<ChatBubbleOutlineIcon />
+										<span className={classes.count}>
+											{post.comments.count}
+										</span>
+									</IconButton>
+									<IconButton aria-label="share">
+										<ShareIcon />
+										<span className={classes.count}>
+											{post.reposts.count}
+										</span>
+									</IconButton>
+								</CardActions>
+							</Card>
+						))}
+				</Grid>
 			</Grid>
 		</div>
 	);
