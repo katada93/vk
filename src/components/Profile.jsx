@@ -2,7 +2,6 @@ import useVK from "../services/VK";
 import { useParams, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
-	Button,
 	Card,
 	CardActionArea,
 	CardActions,
@@ -47,8 +46,6 @@ const Profile = () => {
 				owner_id: userId,
 			});
 
-			console.log(answer.response.items);
-
 			setPosts(answer.response.items);
 		};
 		fetchWall();
@@ -58,69 +55,70 @@ const Profile = () => {
 
 	return (
 		<div>
-			<Typography variant="h3" align="center">
-				Profile
-			</Typography>
 			<Grid container>
 				<Grid item xs={4}>
 					<Friends />
 				</Grid>
 				<Grid item xs={8}>
-					{posts &&
-						posts.map((post) => (
-							<Card key={post.id} className={classes.card}>
-								<CardActionArea>
-									<CardHeader
-										avatar={
-											<Avatar
-												aria-label="recipe"
-												className={classes.avatar}
-											>
-												R
-											</Avatar>
-										}
-										title="Shrimp and Chorizo Paella"
-										subheader="14.06.2021"
-									/>
-									<CardMedia
-										component="img"
-										alt="Contemplative Reptile"
-										height="200"
-										image="https://www.geeklawblog.com/wp-content/uploads/sites/528/2018/12/liprofile-656x369.png"
-										title="Contemplative Reptile"
-									/>
-									<CardContent>
-										<Typography
-											variant="body2"
-											color="textSecondary"
-											component="p"
+					<Typography variant="h3" align="center">
+						Profile
+					</Typography>
+					{posts.map((post) => (
+						<Card key={post.id} className={classes.card}>
+							<CardActionArea>
+								<CardHeader
+									avatar={
+										<Avatar
+											aria-label="recipe"
+											className={classes.avatar}
 										>
-											{post.text}
-										</Typography>
-									</CardContent>
-								</CardActionArea>
-								<CardActions>
-									<IconButton aria-label="likes">
-										<FavoriteIcon />
-										<span className={classes.count}>
-											{post.likes.count}
-										</span>
-									</IconButton>
-									<IconButton aria-label="comments">
-										<ChatBubbleOutlineIcon />
-										<span className={classes.count}>
-											{post.comments.count}
-										</span>
-									</IconButton>
-									<IconButton aria-label="share">
-										<ShareIcon />
-										<span className={classes.count}>
-											{post.reposts.count}
-										</span>
-									</IconButton>
-								</CardActions>
-							</Card>
-						))}
+											R
+										</Avatar>
+									}
+									title="Shrimp and Chorizo Paella"
+									subheader="14.06.2021"
+								/>
+								<CardMedia
+									component="img"
+									alt="Contemplative Reptile"
+									height="200"
+									image={
+										post.attachments?.[0].photo?.photo_807
+									}
+									title="Contemplative Reptile"
+								/>
+								<CardContent>
+									<Typography
+										variant="body2"
+										color="textSecondary"
+										component="p"
+									>
+										{post.text}
+									</Typography>
+								</CardContent>
+							</CardActionArea>
+							<CardActions>
+								<IconButton aria-label="likes">
+									<FavoriteIcon />
+									<span className={classes.count}>
+										{post.likes.count}
+									</span>
+								</IconButton>
+								<IconButton aria-label="comments">
+									<ChatBubbleOutlineIcon />
+									<span className={classes.count}>
+										{post.comments.count}
+									</span>
+								</IconButton>
+								<IconButton aria-label="share">
+									<ShareIcon />
+									<span className={classes.count}>
+										{post.reposts.count}
+									</span>
+								</IconButton>
+							</CardActions>
+						</Card>
+					))}
 				</Grid>
 			</Grid>
 		</div>

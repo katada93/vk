@@ -5,7 +5,7 @@ import Profile from "./components/Profile";
 
 function App() {
 	return (
-		<div className="App">
+		<div className="App" style={{ backgroundColor: "#edeef0" }}>
 			<Header />
 			<Container>
 				<Switch>
