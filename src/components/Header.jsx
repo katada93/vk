@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import useVK from "../services/VK";
+import FacebookIcon from "@material-ui/icons/Facebook";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -18,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		flexGrow: 1,
+		textDecoration: "none",
+		color: "inherit",
 	},
 	link: {
 		textDecoration: "none",
@@ -38,15 +41,14 @@ const Header = () => {
 					className={classes.appBar}
 				>
 					<Toolbar>
-						<Typography
-							variant="h4"
-							component="span"
+						<Link
+							to={!user ? "/" : `/user/${user?.id}`}
 							className={classes.title}
 						>
-							<Link to="/" className={classes.link}>
+							<Typography variant="h4" component="span">
 								Home
-							</Link>
-						</Typography>
+							</Typography>
+						</Link>
 						<Typography variant="h5" component="span">
 							<Link to="/login" className={classes.link}>
 								{user?.first_name || "Login"}

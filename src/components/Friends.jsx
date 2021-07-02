@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import useVK from "../services/VK";
-import { Typography } from "@material-ui/core";
-import useStyles from "./Friends";
+import { Typography, makeStyles } from "@material-ui/core";
+import { $friends, setFriends } from "../store";
+import { useStore } from "effector-react";
 
-const Friends = () => {
+const Friends = ({ userId }) => {
 	const { call } = useVK();
-	const { userId } = useParams();
 	const classes = useStyles();
-
-	const [items, setItems] = useState([]);
-
-	console.log(items);
+	const { items } = useStore($friends);
 
 	useEffect(() => {
 		const fetchFriends = async () => {
@@ -20,17 +17,12 @@ const Friends = () => {
 				fields: "city,domain,photo_50",
 			});
 
-			console.log(answer.response.items);
-
-			setItems(answer.response.items);
+			setFriends(answer.response.items);
 		};
 		fetchFriends();
 	}, [call, userId]);
 	return (
 		<div className="friends">
-			<Typography variant="h4" align="center">
-				Friends
-			</Typography>
 			<ul className={classes.list}>
 				{items.map((item) => (
 					<li key={item.id}>
@@ -51,5 +43,31 @@ const Friends = () => {
 		</div>
 	);
 };
+
+const useStyles = makeStyles({
+	list: {
+		padding: 0,
+		listStyle: "none",
+		display: "flex",
+		flexWrap: "wrap",
+		"& li": {
+			width: "25%",
+		},
+	},
+	link: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		margin: 5,
+		textDecoration: "none",
+		color: "#2a5885",
+		"& span": {
+			fontSize: "13px",
+			"&:hover": {
+				textDecoration: "underline",
+			},
+		},
+	},
+});
 
 export default Friends;

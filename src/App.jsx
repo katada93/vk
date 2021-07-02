@@ -1,11 +1,13 @@
-import { Header, Login } from "./components";
+import { Header, Login, Profile } from "./components";
 import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
-import Profile from "./components/Profile";
 
 function App() {
 	return (
-		<div className="App" style={{ backgroundColor: "#edeef0" }}>
+		<div
+			className="App"
+			style={{ backgroundColor: "#edeef0", minHeight: "100vh" }}
+		>
 			<Header />
 			<Container>
 				<Switch>
