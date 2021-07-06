@@ -1,4 +1,4 @@
-import { Header, Login, Profile } from "./components";
+import { Header, Login, Profile, Post } from "./components";
 import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 
@@ -18,6 +18,9 @@ function App() {
 					<Route exact path="/user/:userId">
 						<Profile />
 					</Route>
+					{/* <Route exact path="/post/:postId">
+						<Post />
+					</Route> */}
 				</Switch>
 			</Container>
 		</div>

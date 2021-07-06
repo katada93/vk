@@ -5,32 +5,14 @@ import {
 	makeStyles,
 	Container,
 } from "@material-ui/core";
+import { useStore } from "effector-react";
 import { Link } from "react-router-dom";
-import useVK from "../services/VK";
-import FacebookIcon from "@material-ui/icons/Facebook";
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-		backgroundColor: "#fff",
-	},
-	appBar: {
-		boxShadow: "none",
-	},
-	title: {
-		flexGrow: 1,
-		textDecoration: "none",
-		color: "inherit",
-	},
-	link: {
-		textDecoration: "none",
-		color: "inherit",
-	},
-}));
+// import useVK from "../services/VK";
+import { $session } from "../store";
 
 const Header = () => {
 	const classes = useStyles();
-	const { user } = useVK();
+	const { user } = useStore($session);
 
 	return (
 		<div className={classes.root}>
@@ -60,5 +42,24 @@ const Header = () => {
 		</div>
 	);
 };
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		flexGrow: 1,
+		backgroundColor: "#fff",
+	},
+	appBar: {
+		boxShadow: "none",
+	},
+	title: {
+		flexGrow: 1,
+		textDecoration: "none",
+		color: "inherit",
+	},
+	link: {
+		textDecoration: "none",
+		color: "inherit",
+	},
+}));
 
 export default Header;

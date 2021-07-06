@@ -1,28 +1,14 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import useVK from "../services/VK";
-import { setUser } from "../store";
-
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
+import { useStore } from "effector-react";
+import { $session, login, logout } from "../store";
 
 const Login = () => {
 	const classes = useStyles();
-	const { user, login, authenticated, logout } = useVK();
+	const { loading, user, isAuthenticated } = useStore($session);
 
-	if (authenticated) {
+	console.log(user);
+
+	if (isAuthenticated) {
 		return (
 			<Grid item md={4} style={{ margin: "0 auto" }}>
 				<div className={classes.paper}>
@@ -62,5 +48,21 @@ const Login = () => {
 		</Grid>
 	);
 };
+
+const useStyles = makeStyles((theme) => ({
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1),
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
+}));
 
 export default Login;

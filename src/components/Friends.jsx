@@ -1,55 +1,19 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import useVK from "../services/VK";
-import { Typography, makeStyles } from "@material-ui/core";
-import { $friends, setFriends } from "../store";
+import { makeStyles } from "@material-ui/core";
 import { useStore } from "effector-react";
-
-const Friends = ({ userId }) => {
-	const { call } = useVK();
-	const classes = useStyles();
-	const { items } = useStore($friends);
-
-	useEffect(() => {
-		const fetchFriends = async () => {
-			const answer = await call("friends.get", {
-				user_id: userId,
-				fields: "city,domain,photo_50",
-			});
-
-			setFriends(answer.response.items);
-		};
-		fetchFriends();
-	}, [call, userId]);
-	return (
-		<div className="friends">
-			<ul className={classes.list}>
-				{items.map((item) => (
-					<li key={item.id}>
-						<Link to={`/user/${item.id}`} className={classes.link}>
-							<img
-								style={{
-									borderRadius: "50%",
-								}}
-								src={item.photo_50}
-								alt="User img"
-								mb={5}
-							/>
-							<span>{item.first_name}</span>
-						</Link>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
-};
 
 const useStyles = makeStyles({
 	list: {
+		height: 380,
+		overflowY: "scroll",
 		padding: 0,
 		listStyle: "none",
 		display: "flex",
 		flexWrap: "wrap",
+		"&::-webkit-scrollbar": {
+			display: "none",
+		},
 		"& li": {
 			width: "25%",
 		},
@@ -69,5 +33,32 @@ const useStyles = makeStyles({
 		},
 	},
 });
+
+const Friends = (props) => {
+	const classes = useStyles();
+	const { friends } = props;
+
+	return (
+		<div className="friends">
+			<ul className={classes.list}>
+				{friends.map((item) => (
+					<li key={item.id}>
+						<Link to={`/user/${item.id}`} className={classes.link}>
+							<img
+								style={{
+									borderRadius: "50%",
+								}}
+								src={item.photo_50}
+								alt="User img"
+								mb={5}
+							/>
+							<span>{item.first_name}</span>
+						</Link>
+					</li>
+				))}
+			</ul>
+		</div>
+	);
+};
 
 export default Friends;

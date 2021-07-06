@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
 	Paper,
 	Typography,
@@ -10,23 +10,13 @@ import {
 } from "@material-ui/core";
 import useVK from "../services/VK";
 import { useStore } from "effector-react";
-import { $user, setUser } from "../store";
+import { $session } from "../store";
+// import { $user, setUser } from "../store";
+import { call } from "../store";
 
-const User = ({ userId }) => {
-	const { call } = useVK();
-	const user = useStore($user);
+const User = (props) => {
+	const { user } = props;
 
-	useEffect(() => {
-		const fetchUserData = async () => {
-			const answer = await call("users.get", {
-				user_ids: userId,
-				fields: "photo_400_orig,sex,bdate,home_town,common_count,site,counters,status",
-			});
-
-			setUser(answer.response[0]);
-		};
-		fetchUserData();
-	}, [call, userId]);
 	return (
 		<Grid container justify="space-around">
 			<Grid item xs={3}>

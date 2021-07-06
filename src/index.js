@@ -4,14 +4,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { VKProvider } from "./services/VK";
+import { sessionContinue } from "./store";
+
+sessionContinue();
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Router>
-			<VKProvider>
-				<App />
-			</VKProvider>
+			<App />
 		</Router>
 	</React.StrictMode>,
 	document.getElementById("root")
