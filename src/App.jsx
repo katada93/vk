@@ -9,7 +9,7 @@ function App() {
 			style={{ backgroundColor: "#edeef0", minHeight: "100vh" }}
 		>
 			<Header />
-			<Container>
+			<Container maxWidth="md">
 				<Switch>
 					<Route exact path="/login">
 						<Login />
@@ -18,9 +18,9 @@ function App() {
 					<Route exact path="/user/:userId">
 						<Profile />
 					</Route>
-					{/* <Route exact path="/post/:postId">
+					<Route exact path="/post/:postId">
 						<Post />
-					</Route> */}
+					</Route>
 				</Switch>
 			</Container>
 		</div>

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
 	Paper,
 	Typography,
@@ -8,25 +7,26 @@ import {
 	ListItemText,
 	Divider,
 } from "@material-ui/core";
-import useVK from "../services/VK";
-import { useStore } from "effector-react";
-import { $session } from "../store";
-// import { $user, setUser } from "../store";
-import { call } from "../store";
+import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 
 const User = (props) => {
 	const { user } = props;
 
 	return (
-		<Grid container justify="space-around">
+		<Grid
+			container
+			justify="space-between"
+			style={{ marginTop: 30, marginBottom: 30 }}
+		>
 			<Grid item xs={3}>
 				<Paper style={{ padding: 10 }}>
 					<img
 						style={{
 							display: "block",
-							width: "100%",
+							width: 200,
 							height: 300,
 							borderRadius: 5,
+							margin: "0 auto",
 						}}
 						src={user.photo_400_orig}
 						alt=""
@@ -36,9 +36,29 @@ const User = (props) => {
 
 			<Grid item xs={8}>
 				<Paper style={{ padding: 20 }}>
-					<Typography variant="h5">
-						{user.first_name} {user.last_name}
-					</Typography>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "space-between",
+						}}
+					>
+						<Typography variant="h5">
+							{user.first_name} {user.last_name}
+						</Typography>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							<Typography color="textSecondary">
+								{user.online ? "online" : null}
+							</Typography>
+							{user.online_mobile ? (
+								<PhoneAndroidIcon fontSize="small" />
+							) : null}
+						</div>
+					</div>
 					<Typography variant="body1" color="textSecondary">
 						{user.status}
 					</Typography>
@@ -70,12 +90,62 @@ const User = (props) => {
 							display: "flex",
 							listStyle: "none",
 							justifyContent: "space-around",
+							color: "#2a5885",
+							fontWeight: 700,
 						}}
 					>
-						<li>{user?.counters?.friends} друзей</li>
-						<li>{user?.counters?.followers} подписчиков</li>
-						<li>{user?.counters?.photos} фотографий</li>
-						<li>{user?.counters?.articles} статей</li>
+						<li
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<span>{user?.counters?.friends}</span>
+							<Typography variant="body2" color="textSecondary">
+								друзей
+							</Typography>
+						</li>
+						<li
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<span>{user?.counters?.followers}</span>
+							<Typography variant="body2" color="textSecondary">
+								подписчиков
+							</Typography>
+						</li>
+						<li
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<span>{user?.counters?.photos}</span>
+							<Typography variant="body2" color="textSecondary">
+								фотографий
+							</Typography>
+						</li>
+						<li
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<span>{user?.counters?.articles ?? 0}</span>
+							<Typography variant="body2" color="textSecondary">
+								статей
+							</Typography>
+						</li>
 					</ul>
 				</Paper>
 			</Grid>

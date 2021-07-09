@@ -18,11 +18,9 @@ const userLoad = createEffect(async (userId) => {
 		method: "users.get",
 		params: {
 			user_ids: userId,
-			fields: "photo_400_orig,sex,bdate,home_town,common_count,site,counters,status",
+			fields: "photo_400_orig,sex,bdate,home_town,common_count,site,counters,status,online",
 		},
 	});
-
-	console.log(answer);
 
 	return answer.response[0];
 });
@@ -47,8 +45,6 @@ const friendsLoad = createEffect(async (userId) => {
 			fields: "city,domain,photo_50",
 		},
 	});
-
-	console.log(answer);
 
 	return answer.response.items;
 });
@@ -90,7 +86,7 @@ $wallStore.on(wallLoad.doneData, (state, posts) => ({
 	loading: false,
 }));
 
-const $store = combine(
+export const $store = combine(
 	$userStore,
 	$friendsStore,
 	$wallStore,
@@ -124,16 +120,14 @@ const Profile = () => {
 	}, [loading, user]);
 
 	return (
-		<Grid container>
-			<Grid item xs={12} style={{ marginBottom: 30, marginTop: 30 }}>
-				{userSegment}
-			</Grid>
-			<Grid item xs={4}>
+		<Grid container justify="space-between">
+			{userSegment}
+			<Grid item xs={3}>
 				<Friends friends={friends} />
 			</Grid>
-			{/* <Grid item xs={8}>
-				<Wall posts={posts} />
-			</Grid> */}
+			<Grid item xs={8}>
+				<Wall posts={posts} user={user} />
+			</Grid>
 		</Grid>
 	);
 };

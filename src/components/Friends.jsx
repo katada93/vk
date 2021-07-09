@@ -1,7 +1,37 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
-import { useStore } from "effector-react";
+import { makeStyles, Paper } from "@material-ui/core";
+
+const Friends = (props) => {
+	const { friends } = props;
+	const classes = useStyles();
+
+	return (
+		<div className="friends">
+			<Paper>
+				<ul className={classes.list}>
+					{friends.map((item) => (
+						<li key={item.id}>
+							<Link
+								to={`/user/${item.id}`}
+								className={classes.link}
+							>
+								<img
+									style={{
+										borderRadius: "50%",
+									}}
+									src={item.photo_50}
+									alt="User img"
+									mb={5}
+								/>
+								<span>{item.first_name}</span>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</Paper>
+		</div>
+	);
+};
 
 const useStyles = makeStyles({
 	list: {
@@ -15,7 +45,7 @@ const useStyles = makeStyles({
 			display: "none",
 		},
 		"& li": {
-			width: "25%",
+			width: "33%",
 		},
 	},
 	link: {
@@ -33,32 +63,5 @@ const useStyles = makeStyles({
 		},
 	},
 });
-
-const Friends = (props) => {
-	const classes = useStyles();
-	const { friends } = props;
-
-	return (
-		<div className="friends">
-			<ul className={classes.list}>
-				{friends.map((item) => (
-					<li key={item.id}>
-						<Link to={`/user/${item.id}`} className={classes.link}>
-							<img
-								style={{
-									borderRadius: "50%",
-								}}
-								src={item.photo_50}
-								alt="User img"
-								mb={5}
-							/>
-							<span>{item.first_name}</span>
-						</Link>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
-};
 
 export default Friends;
