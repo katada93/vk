@@ -1,100 +1,81 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import {
-	Grid,
-	Paper,
+	Card,
+	CardActionArea,
+	CardActions,
+	CardContent,
+	CardMedia,
 	Typography,
-	IconButton,
+	makeStyles,
+	CardHeader,
 	Avatar,
 	Divider,
-	CircularProgress,
+	IconButton,
 } from "@material-ui/core";
-import { useStore } from "effector-react";
+
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
-import { $store } from "./Profile";
-import { createEffect, createStore } from "effector";
-import { call } from "../store";
-import Comments from "./Comments";
+import { useHistory } from "react-router-dom";
+import Comments from "./Comments/Comments";
+import PropTypes from "prop-types";
 
-const $postStore = createStore({
-	loading: false,
-	post: null,
-});
-
-const postLoad = createEffect(async (userId) => {
-	const answer = await call({
-		method: "wall.getById",
-		params: {
-			posts: userId,
-		},
-	});
-
-	return answer.response[0];
-});
-
-$postStore.on(postLoad, (state) => ({ ...state, loading: true }));
-$postStore.on(postLoad.doneData, (state, post) => ({
-	...state,
-	post,
-	loading: false,
-}));
-
-const Post = () => {
-	const { postId } = useParams();
-	const { user } = useStore($store);
-	const { post, loading } = useStore($postStore);
-
-	useEffect(() => {
-		postLoad(postId);
-	}, [postId]);
-
-	if (loading) {
-		return <CircularProgress />;
-	}
+const Post = (props) => {
+	const { user, onClick } = props;
 
 	return (
-		<Grid container justify="center" style={{ marginTop: 20 }}>
-			<Grid item xs={8}>
-				{post && (
-					<Paper style={{ padding: 10 }}>
-						<div style={{ display: "flex", marginBottom: 20 }}>
-							<Avatar
-								alt="Remy Sharp"
-								src={user.photo_400_orig}
-							/>
-							<span style={{ marginLeft: 20 }}>
-								{user.first_name} {user.last_name}
-							</span>
-						</div>
-						<img
-							src={post.attachments?.[0].photo?.photo_807}
-							alt="qwerty"
-						/>
-						<Typography>{post.text}</Typography>
-						<Divider />
-						<div>
-							<IconButton aria-label="likes">
-								<FavoriteIcon />
-								<span>{post.likes.count}</span>
-							</IconButton>
-							<IconButton aria-label="comments">
-								<ChatBubbleOutlineIcon />
-								<span>{post.comments.count}</span>
-							</IconButton>
-							<IconButton aria-label="share">
-								<ShareIcon />
-								<span>{post.reposts.count}</span>
-							</IconButton>
-						</div>
-						<Divider />
-						<Comments userId={user.id} postId={post.id} />
-					</Paper>
-				)}
-			</Grid>
-		</Grid>
+		<Card onClick={onClick} className={classes.card}>
+			<CardActionArea>
+				<CardHeader
+					avatar={
+						<Avatar aria-label="recipe">
+							<img src={user?.photo_400_orig} alt="" />
+						</Avatar>
+					}
+					title={`${user.first_name} ${user.last_name}`}
+					subheader={format(post.date)}
+				/>
+				<CardMedia
+					component="img"
+					alt="Contemplative Reptile"
+					height="400"
+					image={post.attachments?.[0].photo?.photo_807}
+					title="Contemplative Reptile"
+				/>
+				<CardContent>
+					<Typography
+						variant="body2"
+						color="textSecondary"
+						component="p"
+					>
+						{post.text}
+					</Typography>
+				</CardContent>
+			</CardActionArea>
+			<Divider />
+			<CardActions>
+				<IconButton aria-label="likes">
+					<FavoriteIcon />
+					<span className={classes.count}>{post.likes.count}</span>
+				</IconButton>
+				<IconButton aria-label="comments">
+					<ChatBubbleOutlineIcon />
+					<span className={classes.count}>{post.comments.count}</span>
+				</IconButton>
+				<IconButton aria-label="share">
+					<ShareIcon />
+					<span className={classes.count}>{post.reposts.count}</span>
+				</IconButton>
+			</CardActions>
+			<Divider />
+
+			<Comments />
+		</Card>
 	);
+};
+
+Post.propTypes = {
+	user: PropTypes.object.isRequired,
+	onClick: PropTypes.func.isRequired,
 };
 
 export default Post;

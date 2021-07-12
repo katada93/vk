@@ -1,4 +1,4 @@
-import { createStore, createEffect, combine, attach } from "effector";
+import { createStore, createEffect, combine, sample } from "effector";
 import { useStore } from "effector-react";
 import { Grid, CircularProgress } from "@material-ui/core";
 import Friends from "./Friends";
@@ -7,6 +7,7 @@ import User from "./User";
 import { useParams } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { call } from "../store";
+import { loadComments } from "./Comments/model";
 
 const $userStore = createStore({
 	loading: false,
@@ -49,12 +50,6 @@ const friendsLoad = createEffect(async (userId) => {
 	return answer.response.items;
 });
 
-// attach({
-// 	effector: friendsLoad,
-// 	source: { userStore: $userStore, friendsStore: $friendsStore },
-// 	mapParams: (params, { userState, friendsStore }) => {},
-// });
-
 $friendsStore.on(friendsLoad, (state) => ({ ...state, loading: true }));
 $friendsStore.on(friendsLoad.doneData, (state, friends) => ({
 	...state,
@@ -82,8 +77,37 @@ const wallLoad = createEffect(async (userId) => {
 $wallStore.on(wallLoad, (state) => ({ ...state, loading: true }));
 $wallStore.on(wallLoad.doneData, (state, posts) => ({
 	...state,
-	posts,
+	posts: posts.map((post) => ({ ...post, comments: [] })),
 	loading: false,
+}));
+
+const loadPostsComments = sample({
+	clock: wallLoad.doneData,
+
+	fn: (posts) =>
+		posts.map((post) => ({ postId: post.id, userId: post.owner_id })),
+
+	target: createEffect(async (pairs) => {
+		return await Promise.all(pairs.map((pair) => loadComments(pair)));
+	}),
+});
+
+$wallStore.on(loadPostsComments, (state) => ({ ...state, loading: true }));
+$wallStore.on(loadPostsComments.doneData, (state, postsComments) => ({
+	...state,
+	loading: false,
+	posts: state.posts.map((post) => {
+		const comments = postsComments.find(({ postId }) => postId === post.id);
+
+		if (comments && comments.length) {
+			return {
+				...post,
+				comments,
+			};
+		}
+
+		return post;
+	}),
 }));
 
 export const $store = combine(

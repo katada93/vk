@@ -9,17 +9,19 @@ function App() {
 			style={{ backgroundColor: "#edeef0", minHeight: "100vh" }}
 		>
 			<Header />
+
 			<Container maxWidth="md">
 				<Switch>
 					<Route exact path="/login">
 						<Login />
 					</Route>
 
+					<Route exact path="/user/post/:postId">
+						<Post />
+					</Route>
+
 					<Route exact path="/user/:userId">
 						<Profile />
-					</Route>
-					<Route exact path="/post/:postId">
-						<Post />
 					</Route>
 				</Switch>
 			</Container>
